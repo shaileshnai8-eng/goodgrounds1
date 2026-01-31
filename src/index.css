@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brewlab Coffee Design System - Warm Earthy Palette */
+
+@layer base {
+  :root {
+    /* Main Coffee Brown - Primary */
+    --background: 30 67% 16%;
+    --foreground: 40 30% 96%;
+
+    /* Cream/Beige - Cards */
+    --card: 40 30% 96%;
+    --card-foreground: 30 67% 16%;
+
+    --popover: 40 30% 96%;
+    --popover-foreground: 30 67% 16%;
+
+    /* Golden Yellow - Accent */
+    --primary: 42 100% 50%;
+    --primary-foreground: 30 67% 12%;
+
+    /* Light Cream - Secondary */
+    --secondary: 40 25% 92%;
+    --secondary-foreground: 30 67% 16%;
+
+    --muted: 30 20% 25%;
+    --muted-foreground: 40 15% 70%;
+
+    --accent: 42 100% 50%;
+    --accent-foreground: 30 67% 12%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 30 30% 30%;
+    --input: 30 30% 30%;
+    --ring: 42 100% 50%;
+
+    --radius: 1rem;
+
+    /* Custom Brewlab Colors */
+    --coffee-dark: 30 67% 12%;
+    --coffee-medium: 30 50% 20%;
+    --coffee-light: 30 40% 28%;
+    --cream: 40 30% 96%;
+    --cream-dark: 40 25% 90%;
+    --gold: 42 100% 50%;
+    --gold-light: 45 100% 60%;
+    --espresso: 25 60% 8%;
+
+    --sidebar-background: 30 67% 12%;
+    --sidebar-foreground: 40 30% 96%;
+    --sidebar-primary: 42 100% 50%;
+    --sidebar-primary-foreground: 30 67% 12%;
+    --sidebar-accent: 30 50% 20%;
+    --sidebar-accent-foreground: 40 30% 96%;
+    --sidebar-border: 30 30% 30%;
+    --sidebar-ring: 42 100% 50%;
+  }
+
+  .dark {
+    --background: 30 67% 12%;
+    --foreground: 40 30% 96%;
+    --card: 30 50% 18%;
+    --card-foreground: 40 30% 96%;
+    --popover: 30 50% 18%;
+    --popover-foreground: 40 30% 96%;
+    --primary: 42 100% 50%;
+    --primary-foreground: 30 67% 12%;
+    --secondary: 30 40% 25%;
+    --secondary-foreground: 40 30% 96%;
+    --muted: 30 30% 22%;
+    --muted-foreground: 40 15% 65%;
+    --accent: 42 100% 50%;
+    --accent-foreground: 30 67% 12%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 30 30% 30%;
+    --input: 30 30% 30%;
+    --ring: 42 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Brewlab Button Variants */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-cream text-coffee-dark px-6 py-3 rounded-full font-medium 
+           transition-all duration-300 hover:bg-gold hover:scale-105 hover:shadow-lg;
+  }
+  
+  .btn-primary-icon {
+    @apply inline-flex items-center justify-center w-12 h-12 bg-cream rounded-full 
+           transition-all duration-300 hover:bg-gold hover:scale-110;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-3 text-cream border-2 border-cream/30 px-6 py-3 rounded-full 
+           font-medium transition-all duration-300 hover:border-gold hover:text-gold;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center gap-2 bg-gold text-coffee-dark px-8 py-4 rounded-full font-semibold 
+           transition-all duration-300 hover:bg-gold-light hover:scale-105 hover:shadow-xl;
+  }
+
+  /* Section Styles */
+  .section-cream {
+    @apply bg-cream text-coffee-dark;
+  }
+
+  .section-dark {
+    @apply bg-coffee-dark text-cream;
+  }
+
+  /* Typography */
+  .heading-hero {
+    @apply font-display text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[7rem] leading-[0.9] tracking-tight;
+  }
+
+  .heading-section {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl tracking-wide;
+  }
+
+  /* Card Hover Effects */
+  .card-hover {
+    @apply transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:-translate-y-2;
+  }
+
+  /* Scroll Reveal Animation Classes */
+  .reveal {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+  }
+
+  .reveal.active {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Parallax Container */
+  .parallax-container {
+    @apply relative overflow-hidden;
+  }
+
+  /* Wave Divider */
+  .wave-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .wave-divider svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 60px;
+  }
+
+  /* Staggered Animation */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+
+  /* Navigation Styles */
+  .nav-link {
+    @apply relative text-cream/80 hover:text-cream transition-colors duration-300;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  /* Gradient Overlays */
+  .gradient-overlay {
+    background: linear-gradient(180deg, 
+      hsl(var(--coffee-dark)) 0%, 
+      hsl(var(--coffee-dark) / 0.8) 50%, 
+      hsl(var(--coffee-dark)) 100%
+    );
+  }
+
+  /* Text Gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-gold to-gold-light bg-clip-text text-transparent;
+  }
+
+  /* Glow Effect */
+  .glow-gold {
+    box-shadow: 0 0 40px hsl(var(--gold) / 0.3);
+  }
+}
+
+@layer utilities {
+  /* Letter spacing for spaced text like in Brewlab */
+  .tracking-spaced {
+    letter-spacing: 0.3em;
+  }
+
+  .tracking-extra-spaced {
+    letter-spacing: 0.5em;
+  }
+}
