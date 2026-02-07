@@ -11,7 +11,8 @@ const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const admin = await Admin.findOne({ username });
+    const normalizedUsername = username?.trim();
+    const admin = await Admin.findOne({ username: normalizedUsername });
 
     if (admin && (await admin.comparePassword(password))) {
       res.json({
@@ -20,6 +21,36 @@ const loginAdmin = async (req, res) => {
         token: generateToken(admin._id),
       });
     } else {
+      const envUsername = process.env.ADMIN_USERNAME?.trim();
+      const envPassword = process.env.ADMIN_PASSWORD;
+      const forceReset = process.env.ADMIN_FORCE_RESET === 'true';
+
+      if (envUsername && envPassword && normalizedUsername === envUsername) {
+        if (!admin && password === envPassword) {
+          const seededAdmin = await Admin.create({
+            username: envUsername,
+            password: envPassword,
+          });
+
+          return res.json({
+            _id: seededAdmin._id,
+            username: seededAdmin.username,
+            token: generateToken(seededAdmin._id),
+          });
+        }
+
+        if (admin && forceReset && password === envPassword) {
+          admin.password = envPassword;
+          await admin.save();
+
+          return res.json({
+            _id: admin._id,
+            username: admin.username,
+            token: generateToken(admin._id),
+          });
+        }
+      }
+
       res.status(401).json({ message: 'Invalid username or password' });
     }
   } catch (error) {
