@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
+  Globe,
   Coffee, 
   Image as ImageIcon, 
   MessageSquare, 
@@ -14,11 +15,12 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
 
   const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-    { icon: Coffee, label: 'Menu Management', path: '/menu' },
-    { icon: ImageIcon, label: 'Gallery', path: '/gallery' },
-    { icon: MessageSquare, label: 'Messages', path: '/messages' },
-    { icon: Settings, label: 'Settings', path: '/settings' },
+    { icon: Globe, label: 'Control Center', path: '/admin/control' },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
+    { icon: Coffee, label: 'Menu Management', path: '/admin/menu' },
+    { icon: ImageIcon, label: 'Gallery', path: '/admin/gallery' },
+    { icon: MessageSquare, label: 'Messages', path: '/admin/messages' },
+    { icon: Settings, label: 'Settings', path: '/admin/settings' },
   ];
 
   return (

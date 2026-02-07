@@ -8,6 +8,7 @@ import MenuManagement from './pages/MenuManagement';
 import GalleryManagement from './pages/GalleryManagement';
 import ContactMessages from './pages/ContactMessages';
 import CafeSettings from './pages/CafeSettings';
+import WebsiteControl from './pages/WebsiteControl';
 
 const AdminIndex = () => {
   return (
@@ -16,6 +17,7 @@ const AdminIndex = () => {
         <Route path="login" element={<LoginPage />} />
         
         <Route element={<ProtectedRoute />}>
+          <Route path="control" element={<AdminLayout><WebsiteControl /></AdminLayout>} />
           <Route path="dashboard" element={<AdminLayout><Dashboard /></AdminLayout>} />
           <Route path="menu" element={<AdminLayout><MenuManagement /></AdminLayout>} />
           <Route path="gallery" element={<AdminLayout><GalleryManagement /></AdminLayout>} />
