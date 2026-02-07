@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useUserAuth } from '@/context/UserAuthContext';
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useUserAuth();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -75,7 +78,25 @@ const Navigation = () => {
         }} transition={{
           delay: 0.5,
           duration: 0.5
-        }} className="hidden lg:flex items-center">
+        }} className="hidden lg:flex items-center gap-6">
+            <div className="flex items-center gap-4 text-sm">
+              {user ? (
+                <>
+                  <span className="text-cream/70">Hi, {user.name.split(' ')[0]}</span>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="nav-link text-sm"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Link to="/login" className="nav-link text-sm">
+                  Sign In
+                </Link>
+              )}
+            </div>
             <a href="#products" className="group flex items-center">
               <span className="btn-primary">Order Now</span>
               <span className="btn-primary-icon ml-1 group-hover:rotate-45 transition-transform duration-300">
@@ -117,10 +138,36 @@ const Navigation = () => {
           }} onClick={() => setIsMobileMenuOpen(false)} className="text-cream text-lg font-medium hover:text-gold transition-colors">
                   {link.name}
                 </motion.a>)}
-              <a href="#products" className="btn-gold w-fit mt-4">
-                Order Now
-                <ArrowUpRight className="w-5 h-5" />
-              </a>
+              <div className="flex flex-col gap-3">
+                {user ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="btn-outline w-fit"
+                  >
+                    Sign Out
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="btn-outline w-fit"
+                  >
+                    Sign In
+                  </Link>
+                )}
+                <a
+                  href="#products"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="btn-gold w-fit"
+                >
+                  Order Now
+                  <ArrowUpRight className="w-5 h-5" />
+                </a>
+              </div>
             </div>
           </motion.div>}
       </AnimatePresence>
