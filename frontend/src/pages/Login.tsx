@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Coffee } from 'lucide-react';
 import api from '@/api';
@@ -7,7 +7,8 @@ import { useUserAuth } from '@/context/UserAuthContext';
 
 const Login = () => {
   const { login } = useUserAuth();
-  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,8 +19,25 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const { data } = await api.post('/users/login', { email, password });
-      login(data);
+      const trimmed = identifier.trim();
+      const isAdminLogin = !trimmed.includes('@');
+
+      if (isAdminLogin) {
+        const { data } = await api.post('/auth/login', {
+          username: trimmed,
+          password,
+        });
+
+        localStorage.setItem('admin', JSON.stringify(data));
+        localStorage.setItem('token', data.token);
+        navigate('/admin/dashboard');
+      } else {
+        const { data } = await api.post('/users/login', {
+          email: trimmed,
+          password,
+        });
+        login(data);
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to sign in');
     } finally {
@@ -79,13 +97,13 @@ const Login = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-coffee-dark/70">Email</label>
+                <label className="block text-sm font-medium text-coffee-dark/70">Email or Admin Username</label>
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
                   className="mt-2 block w-full rounded-xl border border-coffee-light/30 bg-cream-dark/60 px-4 py-3 text-coffee-dark focus:outline-none focus:ring-2 focus:ring-gold"
-                  placeholder="you@example.com"
+                  placeholder="you@example.com or admin"
                   required
                 />
               </div>

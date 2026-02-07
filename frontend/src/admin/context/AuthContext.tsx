@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setAdmin(data);
     localStorage.setItem('admin', JSON.stringify(data));
     localStorage.setItem('token', data.token);
-    navigate('/dashboard');
+    navigate('/admin/dashboard');
   };
 
   const logout = () => {
