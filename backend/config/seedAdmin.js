@@ -3,6 +3,7 @@ import Admin from '../models/Admin.js';
 const seedAdminFromEnv = async () => {
   const username = process.env.ADMIN_USERNAME?.trim();
   const password = process.env.ADMIN_PASSWORD;
+  const forceReset = process.env.ADMIN_FORCE_RESET === 'true';
 
   if (!username || !password) {
     return;
@@ -11,6 +12,14 @@ const seedAdminFromEnv = async () => {
   try {
     const existingAdmin = await Admin.findOne({});
     if (existingAdmin) {
+      if (!forceReset) {
+        return;
+      }
+
+      existingAdmin.username = username;
+      existingAdmin.password = password;
+      await existingAdmin.save();
+      console.log('Admin credentials reset from env');
       return;
     }
 
