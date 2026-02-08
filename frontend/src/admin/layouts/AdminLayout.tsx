@@ -6,7 +6,9 @@ import {
   Image as ImageIcon, 
   MessageSquare, 
   Settings, 
-  LogOut 
+  LogOut,
+  Home,
+  Package
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -16,8 +18,10 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const navItems = [
     { icon: Globe, label: 'Control Center', path: '/admin/control' },
+    { icon: Home, label: 'Homepage Settings', path: '/admin/homepage' },
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
     { icon: Coffee, label: 'Menu Management', path: '/admin/menu' },
+    { icon: Package, label: 'Products Manager', path: '/admin/products' },
     { icon: ImageIcon, label: 'Gallery', path: '/admin/gallery' },
     { icon: MessageSquare, label: 'Messages', path: '/admin/messages' },
     { icon: Settings, label: 'Settings', path: '/admin/settings' },

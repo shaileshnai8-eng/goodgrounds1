@@ -9,6 +9,8 @@ import {
   Settings,
   ArrowUpRight,
   LayoutDashboard,
+  Home,
+  Package,
 } from 'lucide-react';
 
 const WebsiteControl = () => {
@@ -42,10 +44,22 @@ const WebsiteControl = () => {
       to: '/admin/dashboard',
     },
     {
+      label: 'Homepage Settings',
+      description: 'Edit hero copy, buttons, and background content.',
+      icon: Home,
+      to: '/admin/homepage',
+    },
+    {
       label: 'Menu Management',
       description: 'Add, update, or remove coffee items and pricing.',
       icon: Coffee,
       to: '/admin/menu',
+    },
+    {
+      label: 'Products Manager',
+      description: 'Manage product cards shown on the homepage.',
+      icon: Package,
+      to: '/admin/products',
     },
     {
       label: 'Gallery',

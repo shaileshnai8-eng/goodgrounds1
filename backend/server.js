@@ -7,10 +7,12 @@ import seedAdminFromEnv from './config/seedAdmin.js';
 // Routes
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import homepageRoutes from './routes/homepageRoutes.js';
 import menuRoutes from './routes/menuRoutes.js';
 import galleryRoutes from './routes/galleryRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 dotenv.config();
 
@@ -25,7 +27,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/homepage', homepageRoutes);
 app.use('/api/menu', menuRoutes);
+app.use('/api/products', productRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/settings', settingsRoutes);

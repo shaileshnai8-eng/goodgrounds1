@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import productBundles from '@/assets/product-bundles.jpg';
 import productCapsules from '@/assets/product-capsules.jpg';
 import productDarkRoast from '@/assets/product-dark-roast.jpg';
 import productMediumRoast from '@/assets/product-medium-roast.jpg';
 import productOrganic from '@/assets/product-organic.jpg';
+import api from '@/api';
 
-const products = [
+const fallbackProducts = [
   { name: 'Shop Bundles', image: productBundles },
   { name: 'Shop Capsules', image: productCapsules },
   { name: 'Dark Roast', image: productDarkRoast },
@@ -18,6 +19,24 @@ const products = [
 const Products = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [products, setProducts] = useState<any[]>(fallbackProducts);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await api.get('/products?active=true');
+        const sorted = [...data].sort((a: any, b: any) => {
+          const aOrder = a.sortOrder ?? 0;
+          const bOrder = b.sortOrder ?? 0;
+          return aOrder - bOrder;
+        });
+        setProducts(sorted.length ? sorted : fallbackProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <section id="products" className="section-cream py-24 md:py-32">
@@ -53,7 +72,7 @@ const Products = () => {
                 {/* Product Image */}
                 <div className="aspect-square relative mb-4 overflow-hidden rounded-2xl">
                   <img
-                    src={product.image}
+                    src={product.imageUrl || product.image}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -61,7 +80,9 @@ const Products = () => {
                 
                 {/* Product Name */}
                 <h3 className="font-display text-lg md:text-xl text-coffee-dark text-center tracking-wide">
-                  {product.name}
+                  {product.price !== undefined && product.price !== null
+                    ? `${product.name} · $${product.price}`
+                    : product.name}
                 </h3>
               </div>
             </motion.div>

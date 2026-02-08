@@ -1,7 +1,58 @@
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { ArrowUpRight, Play } from 'lucide-react';
 import heroCoffee from '@/assets/hero-coffee.jpg';
+import api from '@/api';
 const Hero = () => {
+  const defaultContent = {
+    tagline: 'Cleveland-based Coffee shop',
+    titlePart1: 'GOOD',
+    titlePart2: 'Grounds|Coffee & Bistro',
+    description:
+      'Did you know that your next favorite coffee may be hiding in plain sight?\\nTake our quiz to get matched with the perfect beans for you.',
+    button1Text: 'Out Products',
+    button1Link: '#products',
+    button2Text: 'Watch Video',
+    button2Link: '',
+    videoUrl: '',
+    heroBgType: 'image',
+    heroBgUrl: '',
+  };
+
+  const [content, setContent] = useState(defaultContent);
+
+  useEffect(() => {
+    const fetchHomepage = async () => {
+      try {
+        const { data } = await api.get('/homepage');
+        setContent({ ...defaultContent, ...data });
+      } catch (error) {
+        console.error('Error fetching homepage content:', error);
+      }
+    };
+    fetchHomepage();
+  }, []);
+
+  const [titleLine1, titleLine2] = (content.titlePart2 || '')
+    .split('|')
+    .map((part: string) => part.trim());
+
+  const heroBackgroundUrl = content.heroBgUrl || heroCoffee;
+
+  const [descriptionLine1, descriptionLine2] = (content.description || '')
+    .split('\\n')
+    .map((part: string) => part.trim());
+
+  const handleSecondaryAction = () => {
+    const link = (content.button2Link || content.videoUrl || '').trim();
+    if (!link) return;
+    if (link.startsWith('#') || link.startsWith('/')) {
+      window.location.href = link;
+      return;
+    }
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
   return <section className="relative min-h-screen flex items-center overflow-hidden bg-coffee-dark">
       {/* Background Image with Parallax Effect */}
       <motion.div initial={{
@@ -13,7 +64,7 @@ const Hero = () => {
       ease: 'easeOut'
     }} className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
-        backgroundImage: `url(${heroCoffee})`
+        backgroundImage: `url(${heroBackgroundUrl})`
       }} />
         <div className="absolute inset-0 bg-gradient-to-r from-coffee-dark/90 via-coffee-dark/70 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark via-transparent to-coffee-dark/30" />
@@ -33,7 +84,7 @@ const Hero = () => {
           delay: 0.3,
           duration: 0.6
         }} className="text-cream/80 text-sm md:text-base tracking-widest mb-4 flex items-center gap-4">
-            Cleveland-based Coffee shop
+            {content.tagline}
             <span className="w-16 h-0.5 bg-cream/40" />
           </motion.p>
 
@@ -50,10 +101,10 @@ const Hero = () => {
             duration: 0.8,
             ease: 'easeOut'
           }} className="heading-hero">
-              <span className="text-gold">GOOD</span>{' '}
-              <span className="text-cream">Grounds</span>
+              <span className="text-gold">{content.titlePart1}</span>{' '}
+              <span className="text-cream">{titleLine1 || 'Grounds'}</span>
               <br />
-              <span className="text-cream">Coffee & Bistro</span>
+              <span className="text-cream">{titleLine2 || ''}</span>
             </motion.h1>
           </div>
 
@@ -90,9 +141,9 @@ const Hero = () => {
           delay: 0.9,
           duration: 0.6
         }} className="text-cream/70 text-base md:text-lg max-w-md mb-10 leading-relaxed">
-            Did you know that your next favorite coffee may be hiding in plain sight?
+            {descriptionLine1}
             <br />
-            Take our quiz to get matched with the perfect beans for you.
+            {descriptionLine2}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -106,18 +157,18 @@ const Hero = () => {
           delay: 1.1,
           duration: 0.6
         }} className="flex flex-wrap items-center gap-6">
-            <a href="#products" className="group flex items-center">
-              <span className="btn-primary">Out Products</span>
+            <a href={content.button1Link || '#products'} className="group flex items-center">
+              <span className="btn-primary">{content.button1Text}</span>
               <span className="btn-primary-icon ml-1 group-hover:rotate-45 transition-transform duration-300">
                 <ArrowUpRight className="w-5 h-5" />
               </span>
             </a>
 
-            <button className="btn-outline group">
+            <button className="btn-outline group" onClick={handleSecondaryAction} type="button">
               <span className="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center group-hover:bg-gold transition-colors duration-300">
                 <Play className="w-4 h-4 fill-current" />
               </span>
-              <span>Watch Video</span>
+              <span>{content.button2Text}</span>
             </button>
           </motion.div>
         </div>
